@@ -3,8 +3,14 @@
     <head>
       <meta charset="UTF-8">
       <title>Project Management at ASG</title>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
     </head>
     <body>
+        <nav>
+            <div class="nav-wrapper">
+                <a href="" class="brand-logo center">List</a>
+            </div>
+        </nav>
       <h1>Financial Tracker</h1>
       <p>
         <table>
@@ -38,12 +44,25 @@
             const {ipcRenderer} = electron;
             const ul = document.querySelector('ul');
 
+            // Add item
             ipcRenderer.on('item:add', function(e, item){
                 const li = document.createElement('li');
                 const itemText = document.createTextNode(item);
                 li.appendChild(itemText);
                 ul.appendChild(li);
             });
+
+            //Clear item
+            ipcRenderer.on('item:clear', function(){
+                ul.innerHTML = '';
+            });  
+            
+            //Remove item
+            ul.addEventListener('dblclick', removeItem);
+
+            function removeItem(e){
+                e.target.remove();
+            }
         </script>
     </body>
     <footer>

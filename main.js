@@ -93,7 +93,10 @@ const {app, BrowserWindow, Menu, ipcMain} = require('electron')
                   }
               },
               {
-                label: 'Clear Items'
+                label: 'Clear Items',
+                click() {
+                    win.webContents.send('item:clear');
+                }
               },
               {
                   label:'Quit',
