@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="UTF-8">
+      <title>Project Management at ASG</title>
+    </head>
+    <body>
+      <h1>Financial Tracker</h1>
+      <p>
+        <table>
+            <tr>
+                <td>Item</td>
+                <td>Initial budget</td>
+                <td>Approved PCRs</td>
+                <td>Current budget</td>
+                <td>Actual</td>
+                <td>ETC</td>
+                <td>EAC</td>
+                <td>VAC($)</td>
+                <td>VAC(%)</td>
+            </tr>
+            <tr>
+                <td>ASG Labour</td>
+                <td>$193,590.80</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0%</td>
+            </tr>         
+        </table>
+        </p>
+        <ul></ul>
+        <script>
+            const electron = require('electron');
+            const {ipcRenderer} = electron;
+            const ul = document.querySelector('ul');
+
+            ipcRenderer.on('item:add', function(e, item){
+                const li = document.createElement('li');
+                const itemText = document.createTextNode(item);
+                li.appendChild(itemText);
+                ul.appendChild(li);
+            });
+        </script>
+    </body>
+    <footer>
+        We are using node <script>document.write(process.versions.node)</script>,
+        Chrome <script>document.write(process.versions.chrome)</script>,
+        and Electron <script>document.write(process.versions.electron)</script>.
+    </footer>
+  </html>

@@ -1,0 +1,23 @@
+{
+  "name": "pasg",
+  "version": "1.0.0",
+  "description": "Project Management at ASG",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khoyle66/pasg.git"
+  },
+  "author": "Kevin Hoyle",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/khoyle66/pasg/issues"
+  },
+  "homepage": "https://github.com/khoyle66/pasg#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "2.0.6"
+  }
+}
