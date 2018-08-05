@@ -14,28 +14,32 @@
       <h1>Financial Tracker</h1>
       <p>
         <table>
-            <tr>
-                <td>Item</td>
-                <td>Initial budget</td>
-                <td>Approved PCRs</td>
-                <td>Current budget</td>
-                <td>Actual</td>
-                <td>ETC</td>
-                <td>EAC</td>
-                <td>VAC($)</td>
-                <td>VAC(%)</td>
-            </tr>
-            <tr>
-                <td>ASG Labour</td>
-                <td>$193,590.80</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0%</td>
-            </tr>         
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Initial budget</th>
+                    <th>Approved PCRs</th>
+                    <th>Current budget</th>
+                    <th>Actual</th>
+                    <th>ETC</th>
+                    <th>EAC</th>
+                    <th>VAC($)</th>
+                    <th>VAC(%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ASG Labour</td>
+                    <td>$193,590.80</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0%</td>
+                </tr>  
+            </tbody>       
         </table>
         </p>
         <ul></ul>
@@ -46,7 +50,9 @@
 
             // Add item
             ipcRenderer.on('item:add', function(e, item){
+                ul.className = 'collection';
                 const li = document.createElement('li');
+                li.className = 'collection-item';
                 const itemText = document.createTextNode(item);
                 li.appendChild(itemText);
                 ul.appendChild(li);
@@ -55,6 +61,7 @@
             //Clear item
             ipcRenderer.on('item:clear', function(){
                 ul.innerHTML = '';
+                ul.className = '';  
             });  
             
             //Remove item
@@ -62,6 +69,9 @@
 
             function removeItem(e){
                 e.target.remove();
+                if(ul.children.length == 0) {
+                    ul.className = '';                    
+                }
             }
         </script>
     </body>

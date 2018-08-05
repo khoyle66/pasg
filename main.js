@@ -1,6 +1,9 @@
 const electron = require('electron')
 const {app, BrowserWindow, Menu, ipcMain} = require('electron')
-  
+
+    // SET ENV
+    //process.env.NODE_ENV = 'production';
+
   // Keep a global reference of the window object, if you don't, the window will
   // be closed automatically when the JavaScript object is garbage collected.
   let win
