@@ -7,7 +7,7 @@
     </head>
     <body>
       <h3>Financial Tracker</h3>
-
+      <textarea id="doc_editor" rows="4" cols="50"></textarea>
       <p>
         <b>Summary(Cost)</b>
         <table>
@@ -43,7 +43,7 @@
         <script>
             const electron = require('electron');
             const {ipcRenderer} = electron;
-            const ul = document.querySelector('ul');
+            const ul = document.querySelector('ul');        
 
             // Add item
             ipcRenderer.on('item:add', function(e, item){
@@ -70,6 +70,11 @@
                     ul.className = '';                    
                 }
             }
+             
+            //  Add document
+            ipcRenderer.on('doc:add', function(e, item){
+                document.getElementById("doc_editor").value = item;
+            });            
         </script>
     </body>
     <footer>

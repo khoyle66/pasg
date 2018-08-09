@@ -1,6 +1,7 @@
 const electron = require('electron')
 const {app, BrowserWindow, Menu, ipcMain} = require('electron')
-
+const {dialog} = require('electron')
+const fs = require('fs');
     // SET ENV
     //process.env.NODE_ENV = 'production';
 
@@ -93,6 +94,32 @@ const {app, BrowserWindow, Menu, ipcMain} = require('electron')
                   label: 'Add Items',
                   click(){
                       createAddWindow();
+                  }
+              },
+              {
+                  label: 'Open AX file',
+                  click(){
+                    dialog.showOpenDialog(
+                        { 
+                            filters: [
+                                { name: 'all files', extensions: ['*']},
+                                { name: 'json', extensions: ['json']},
+                                { name: 'csv', extensions: ['csv'] }
+                            ]
+                        }, 
+                        function (fileNames) {
+                            if (fileNames === undefined) return;
+                            var fileName = fileNames[0];
+                            fs.readFile(fileName, 'utf-8', 
+                                function (err, data) 
+                                {
+                                    console.log("Doc:"+data);
+                                    //win.getElementById("editor").value = data;                     
+                                    win.webContents.send('doc:add',data);
+                                }
+                            );                     
+                        }
+                    ); 
                   }
               },
               {
