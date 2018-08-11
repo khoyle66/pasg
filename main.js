@@ -2,6 +2,8 @@ const electron = require('electron')
 const {app, BrowserWindow, Menu, ipcMain} = require('electron')
 const {dialog} = require('electron')
 const fs = require('fs');
+const XLSX = require('xlsx');
+
     // SET ENV
     //process.env.NODE_ENV = 'production';
 
@@ -101,23 +103,31 @@ const fs = require('fs');
                   click(){
                     dialog.showOpenDialog(
                         { 
-                            filters: [
-                                { name: 'all files', extensions: ['*']},
-                                { name: 'json', extensions: ['json']},
-                                { name: 'csv', extensions: ['csv'] }
-                            ]
+                            title: 'Select a file',
+                            filters: [{
+                                name: "Spreadsheets",
+                                extensions: "xls|xlsx|xlsm|xlsb|xml|xlw|xlc|csv|txt|dif|sylk|slk|prn|ods|fods|uos|dbf|wks|123|wq1|qpw|htm|html".split("|")
+                            }],
+                            properties: ['openFile']
                         }, 
                         function (fileNames) {
                             if (fileNames === undefined) return;
                             var fileName = fileNames[0];
+                            var workbook = XLSX.readFile(fileName);
+
+                            var sheet_name_list = workbook.SheetNames;
+                            var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);                                                       
+                            //console.log(xlData);
+                            win.webContents.send('doc:add',workbook);
+/*
                             fs.readFile(fileName, 'utf-8', 
                                 function (err, data) 
                                 {
-                                    console.log("Doc:"+data);
+                                    //console.log("Doc:"+data);
                                     //win.getElementById("editor").value = data;                     
                                     win.webContents.send('doc:add',data);
                                 }
-                            );                     
+                            );  */                   
                         }
                     ); 
                   }

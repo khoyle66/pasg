@@ -13,7 +13,10 @@
     "url": "https://github.com/khoyle66/pasg/issues"
   },
   "homepage": "https://github.com/khoyle66/pasg#readme",
-  "dependencies": {},
+  "dependencies": {
+    "moment": "^2.22.2",
+    "xlsx": "^0.13.3"
+  },
   "devDependencies": {
     "electron": "2.0.6",
     "electron-packager": "^12.1.0"
@@ -21,8 +24,7 @@
   "scripts": {
     "start": "electron .",
     "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds",
-    "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"pasg\"",    
+    "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"pasg\"",
     "package-linux": "electron-packager . --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/icon.png --prune=true --out=release-builds"
   }
- 
 }

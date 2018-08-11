@@ -3,79 +3,95 @@
     <head>
       <meta charset="UTF-8">
       <title>Project Management at ASG</title>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     </head>
-    <body>
-      <h3>Financial Tracker</h3>
-      <textarea id="doc_editor" rows="4" cols="50"></textarea>
-      <p>
-        <b>Summary(Cost)</b>
-        <table>
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Initial budget</th>
-                    <th>Approved PCRs</th>
-                    <th>Current budget</th>
-                    <th>Actual</th>
-                    <th>ETC</th>
-                    <th>EAC</th>
-                    <th>VAC($)</th>
-                    <th>VAC(%)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>ASG Labour</td>
-                    <td>$193,590.80</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0%</td>
-                </tr>  
-            </tbody>       
-        </table>
+    <body style="margin: 10px">
+        <h3 style="text-align: center;">Project Status Report</h3>
+        <b>Project Properties</b>
+        <table border="1" style="width:100%;">
+            <tr>
+                <td>Customer Name</td>
+                <td colspan="3">Department of Environment, Land, Water and Planning (DELWP)</td>
+            </tr>
+            <tr>
+                <td>Project Sponsor</td>
+                <td colspan="3">Matt Allen</td>
+            </tr>
+            <tr>
+                <td>Project Manager</td>
+                <td colspan="3">Kevin Hoyle</td>
+            </tr>
+            <tr>
+                <td>Project Name</td>
+                <td colspan="3"><output id="P_Name"></td>
+            </tr>
+            <tr>
+                <td>Project Code</td>
+                <td><output id="P_Code"></td>
+                <td>Project Contract Basis</td>
+                <td>Combined</td>
+            </tr>
+            <tr>
+                <td>Project Category</td>
+                <td></td>
+                <td>Project Stage</td>
+                <td>Execution</td>
+            </tr>
+            <tr>
+                <td>Project Start Date</td>
+                <td><output id="Start_Date"></td>
+                <td>PSR Frequency</td>
+                <td>Fortnightly</td>
+            </tr>
+            <tr>
+                <td>Baseline Approved Completion Date</td>
+                <td>20-Jul-18</td>
+                <td>Reporting Period From</td>
+                <td>16/07/2018</td>
+            </tr>
+            <tr>
+                <td>Current Approved Completion Date</td>
+                <td></td>
+                <td>Reporting Period To</td>
+                <td><output id="W_End"></output></td>
+            </tr>
+            <tr>
+                <td>Forecast Project Completion Date</td>
+                <td>2-Sep-17</td>
+                <td>Overall % complete (schedule)</td>
+                <td>85%</td>
+            </tr>
+        </table>       
+        <br>
+        <p>
+            <b>Project Financial Summary</b>
+            <table id="table_cost" border="1" style="width:100%;margin-top: 0;">
+                <thead>
+                    <tr>
+                        <th>Cost</th>
+                        <th>Initial budget</th>
+                        <th>Approved PCRs</th>
+                        <th>Current budget</th>
+                        <th>Actual</th>
+                        <th>ETC</th>
+                        <th>EAC</th>
+                        <th>VAC($)</th>
+                        <th>VAC(%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                                                                                             
+                </tbody>       
+            </table>
+            Labour Hours: <output id="Labour_Hours"></output><br>
+            Labour Sales: $<output id="Labour_Sales"></output>            
+            </p>
+            <ul></ul>        
+        <p>
+            <div id="htmlout"></div>
         </p>
-        <ul></ul>
-        <script>
-            const electron = require('electron');
-            const {ipcRenderer} = electron;
-            const ul = document.querySelector('ul');        
 
-            // Add item
-            ipcRenderer.on('item:add', function(e, item){
-                ul.className = 'collection';
-                const li = document.createElement('li');
-                li.className = 'collection-item';
-                const itemText = document.createTextNode(item);
-                li.appendChild(itemText);
-                ul.appendChild(li);
-            });
-
-            //Clear item
-            ipcRenderer.on('item:clear', function(){
-                ul.innerHTML = '';
-                ul.className = '';  
-            });  
-            
-            //Remove item
-            ul.addEventListener('dblclick', removeItem);
-
-            function removeItem(e){
-                e.target.remove();
-                if(ul.children.length == 0) {
-                    ul.className = '';                    
-                }
-            }
-             
-            //  Add document
-            ipcRenderer.on('doc:add', function(e, item){
-                document.getElementById("doc_editor").value = item;
-            });            
-        </script>
+        <script src="index.js"></script>
     </body>
     <footer>
         We are using node <script>document.write(process.versions.node)</script>,
