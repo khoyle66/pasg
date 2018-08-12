@@ -35,11 +35,10 @@ function removeItem(e){
 //  Add document
 ipcRenderer.on('doc:add', function(e, wb){
     
-    var HTMLOUT = document.getElementById('htmlout');
-    HTMLOUT.innerHTML = "";    
+    resetVariable();    
+    var HTMLOUT = document.getElementById('htmlout');    
 
-    //Display Financial Summary Tables
-    fin_sum.style.display = "block";
+
     //Get Spreadsheet
     var first_sheet_name = wb.SheetNames[0];
     sheetName = first_sheet_name;
@@ -51,106 +50,137 @@ ipcRenderer.on('doc:add', function(e, wb){
     var lab_sales = 0;
     var start_date;
     var end_date;
-    var project_code;
-    //Extract Data from Spreadsheet
-    htmlstr.forEach(function(record) {
-        //console.log(record);
-        var tran_date = moment(record.__EMPTY,'DD/MM/YYYY'); 
-        var period_ending = moment(record.__EMPTY_1,'DD/MM/YYYY');  
-        if(tran_date.isValid()) {
-            if (!start_date || tran_date < start_date) {                    
-                    start_date = tran_date;                        
-            }          
-        }
-        if(period_ending.isValid()) {
-            if (!end_date || period_ending > end_date) {
-                end_date = period_ending;
-            }            
-        }            
-        project_code = record.__EMPTY_2; 
-        if(isLabour(record)) {
-            if(!isNaN(record.__EMPTY_8)) {
-                lab_hours += Number(record.__EMPTY_8);;
-            }               
-            if(!isNaN(record.__EMPTY_9)) {
-                lab_cost += Number(record.__EMPTY_9);
-            }
-            if(isBillable(record) && !isNaN(record.__EMPTY_10)) {
-                lab_sales += Number(record.__EMPTY_10);;
-            }
-        }
-    });
+    var project_code =  htmlstr[1].__EMPTY_2;
+    //console.log(project_code);
 
     //Load Project Data
     var projectFile = fs.readFileSync("projects.json");
     // Define to JSON type
     var projects = JSON.parse(projectFile);
-    console.log(projects);
-    console.log(projects[0]);
-    var projects;
+   
+    var project;
     for (var i = 0; i < projects.length; i++) {
         if( projects[i].Code==project_code) {
             project = projects[i];
         }
-    }   
-   
-    //Set HTML Values
-    P_Code.innerHTML = project_code;           
-    P_Name.innerHTML = project.Name;    
-    PM_Name.innerHTML = project.Manager;
-    Cust_Name.innerHTML = project.CustomerName;
-    Sponsor.innerHTML = project.Sponsor;
-    ContractBasis.innerHTML = project.ContractBasis;
-    Category.innerHTML = project.Category;
-    Stage.innerHTML = project.Stage;
-    Start_Date.innerHTML = displayDate(project.StartDate);
-    PSRFrequency.innerHTML = project.PSRFrequency;
-    BACompDate.innerHTML = displayDate(project.BaselineApprovedCompletionDate);
-    RepPeriodFrom.innerHTML = displayDate(project.ReportingPeriodFrom);
-    RepPeriodTo.innerHTML = displayDate(project.ReportingPeriodTo);
-    CACompDate.innerHTML = displayDate(project.CurrentApprovedCompletionDate);
-    FCompDate.innerHTML = displayDate(project.ForecastProjectCompletionDate);
-    PercComp.innerHTML = project.OverallPercComplete + "%";
+    }  
+    console.log(project.Items[2]) ;
 
-    HTMLOUT.innerHTML =  XLSX.utils.sheet_to_html(wb.Sheets[first_sheet_name],{editable:true});
-    //Start_Date.innerHTML = start_date.format('DD-MMM-YY');
-    //W_End.innerHTML = end_date.format('DD-MMM-YY'); 
-    //TEMP FIELDS
-    var COST_PCR = 0;
-    var REV_PCR = 0;
-    ///
-    var finItems = new Array();
-    
-    var labourItem = new FinancialItem("ASG Labour");
-    labourItem.costBudget = project.CostBudget;
-    labourItem.costPCRs = COST_PCR;
-    labourItem.costActual = lab_cost;
-    labourItem.costEtc = project.CostBudget-lab_cost;
-    labourItem.revBudget = project.PriceBudget;    
-    labourItem.revPCRs = REV_PCR;
-    labourItem.revActual = lab_sales;
-    labourItem.revEtc = project.PriceBudget - lab_sales;
-    var subContractItem = new FinancialItem("ASG Subcontractors");
-    var expenseItem = new FinancialItem("Travel/other Expenses");
-    var capitalItem = new FinancialItem("Capital expenditure");
+    if(project == undefined) {
+        fin_sum.style.display = "none";           
+    } 
+    else {  
 
-    finItems.push(labourItem);
-    finItems.push(subContractItem);
-    finItems.push(expenseItem);
-    finItems.push(capitalItem);
+        var labourItem = project.Items[0];
+        var subContractItem = project.Items[1];
+        var expenseItem = project.Items[2];
+        var capitalItem = project.Items[3];
 
-    //var totalItem = new FinancialItem("Total");
+        //Extract Data from Spreadsheet
+        htmlstr.forEach(function(record) {
+            
+            var tran_date = moment(record.__EMPTY,'DD/MM/YYYY'); 
+            var period_ending = moment(record.__EMPTY_1,'DD/MM/YYYY');  
+            if(tran_date.isValid()) {
+                if (!start_date || tran_date < start_date) {                    
+                        start_date = tran_date;                        
+                }          
+            }
+            if(period_ending.isValid()) {
+                if (!end_date || period_ending > end_date) {
+                    end_date = period_ending;
+                }            
+            }                    
+            if(isLabour(record)) {
+                if(!isNaN(record.__EMPTY_8)) {
+                    lab_hours += Number(record.__EMPTY_8);;
+                }               
+                if(!isNaN(record.__EMPTY_9)) {
+                    labourItem.costActual += Number(record.__EMPTY_9);
+                }
+                if(isBillable(record) && !isNaN(record.__EMPTY_10)) {
+                    labourItem.revActual += Number(record.__EMPTY_10);;
+                }
+            }
+        });
 
-    addCostTable(table_cost, finItems);
+        //labourItem.costActual = lab_cost;
+        //labourItem.revActual = lab_sales;
 
-    addRevenueTable(table_revenue, finItems); 
-    //var tot_budget = lab_sales-lab_hours;
-    addMarginTable(table_margin, finItems);
+        //Display Financial Summary Tables
+        fin_sum.style.display = "block";   
+        //Set HTML Values
+        P_Code.innerHTML = project_code;           
+        P_Name.innerHTML = project.Name;    
+        PM_Name.innerHTML = project.Manager;
+        Cust_Name.innerHTML = project.CustomerName;
+        Sponsor.innerHTML = project.Sponsor;
+        ContractBasis.innerHTML = project.ContractBasis;
+        Category.innerHTML = project.Category;
+        Stage.innerHTML = project.Stage;
+        Start_Date.innerHTML = displayDate(project.StartDate);
+        PSRFrequency.innerHTML = project.PSRFrequency;
+        BACompDate.innerHTML = displayDate(project.BaselineApprovedCompletionDate);
+        RepPeriodFrom.innerHTML = displayDate(project.ReportingPeriodFrom);
+        RepPeriodTo.innerHTML = displayDate(project.ReportingPeriodTo);
+        CACompDate.innerHTML = displayDate(project.CurrentApprovedCompletionDate);
+        FCompDate.innerHTML = displayDate(project.ForecastProjectCompletionDate);
+        PercComp.innerHTML = project.OverallPercComplete + "%";
 
+        HTMLOUT.innerHTML =  XLSX.utils.sheet_to_html(wb.Sheets[first_sheet_name],{editable:true});
+        //Start_Date.innerHTML = start_date.format('DD-MMM-YY');
+        //W_End.innerHTML = end_date.format('DD-MMM-YY'); 
+        //TEMP FIELDS
+        var COST_PCR = 0;
+        var REV_PCR = 0;
+        ///
+        var finItems = new Array();
+
+        finItems.push(labourItem);
+        finItems.push(subContractItem);
+        finItems.push(expenseItem);
+        finItems.push(capitalItem);
+
+        //var totalItem = new FinancialItem("Total");
+
+        addCostTable(table_cost, finItems);
+
+        var totalRevItem = addRevenueTable(table_revenue, finItems); 
+        //var tot_budget = lab_sales-lab_hours;
+        var totalItem = addMarginTable(table_margin, finItems);
+
+        addMarginTablePerc(table_margin, totalRevItem, totalItem);
+    }
 });  
 
-function displayDate(date) {
-    return moment(date,'YYYY/MM/DD').format('DD-MMM-YY'); 
+function resetVariable() {
+    htmlout.innerHTML = "";    
+    P_Code.innerHTML = "";
+    P_Name.innerHTML = "";
+    PM_Name.innerHTML = "";
+    Cust_Name.innerHTML = "";
+    Sponsor.innerHTML = "";
+    ContractBasis.innerHTML = "";
+    Category.innerHTML = "";
+    Stage.innerHTML = "";
+    Start_Date.innerHTML = "";
+    PSRFrequency.innerHTML = "";
+    BACompDate.innerHTML = "";
+    RepPeriodFrom.innerHTML = "";
+    RepPeriodTo.innerHTML = "";
+    CACompDate.innerHTML = "";
+    FCompDate.innerHTML = "";
+    PercComp.innerHTML = "";
+    deletAllRows(table_cost);
+    deletAllRows(table_revenue);
+    deletAllRows(table_margin);
+};
+
+function deletAllRows(table) {
+    for(var i = table.rows.length - 1; i > 0; i--)
+    {
+        table.deleteRow(i);
+    }    
 };
 
 function FinancialItem (description) { 
@@ -175,8 +205,8 @@ function addCostTable(table, items) {
         totalItem.costActual += item.costActual;
         totalItem.costEtc += item.costEtc;
       }   
-    addTableRow(table, totalItem.description, totalItem.costBudget, totalItem.costPCRs, totalItem.costActual, totalItem.costEtc)     
-}
+    addTableRow(table, totalItem.description, totalItem.costBudget, totalItem.costPCRs, totalItem.costActual, totalItem.costEtc); 
+};
 function addRevenueTable(table, items) {
     var totalItem = new FinancialItem("Price Total");  
     for (var i = 0, len = items.length; i < len; i++) {
@@ -187,8 +217,9 @@ function addRevenueTable(table, items) {
         totalItem.revActual += item.revActual;
         totalItem.revEtc += item.revEtc;
       }   
-    addTableRow(table, totalItem.description, totalItem.revBudget, totalItem.revPCRs, totalItem.revActual, totalItem.revEtc)         
-}
+    addTableRow(table, totalItem.description, totalItem.revBudget, totalItem.revPCRs, totalItem.revActual, totalItem.revEtc) ;
+    return totalItem;        
+};
 function addMarginTable(table, items) {
     var totalItem = new FinancialItem("Margin Total $");    
     for (var i = 0, len = items.length; i < len; i++) {
@@ -203,9 +234,20 @@ function addMarginTable(table, items) {
         totalItem.revActual += totalActual;
         totalItem.revEtc += totalEtc;
       }   
-    addTableRow(table, totalItem.description, totalItem.revBudget, totalItem.revPCRs, totalItem.revActual, totalItem.revEtc)   
-    addTableRow(table, "Margin Total %", 0,0,0,0);
-}
+    addTableRow(table, totalItem.description, totalItem.revBudget, totalItem.revPCRs, totalItem.revActual, totalItem.revEtc) 
+    return totalItem;
+};
+
+function addMarginTablePerc(table, totalRevenue, totalMargin) {
+    var totalBudget = totalMargin.revBudget / totalRevenue.revBudget * 100;
+    if(totalRevenue.revPCRs==0)
+        totalPCRs = 0;
+    else
+        totalPCRs = totalMargin.revPCRs / totalRevenue.revPCRs * 100;
+    var totalActual = totalMargin.revActual / totalRevenue.revActual * 100;
+    var totalEtc = totalMargin.revEtc / totalRevenue.revEtc * 100;
+    addTableRow(table, "Margin Total %", totalBudget,"",totalActual,totalEtc);
+};
 
 function addTableRow(table_name, description, initialBudget, approvedPCRs, actual, etc) {
     var row = table_name.insertRow();
@@ -225,17 +267,29 @@ function addTableRow(table_name, description, initialBudget, approvedPCRs, actua
         vacPerc = (vac/curBudget)*100;
     }
     row.insertCell(8).innerHTML = vacPerc.toLocaleString();
-}
+};
+function displayDate(date) {
+    return moment(date,'YYYY/MM/DD').format('DD-MMM-YY'); 
+};
 
+
+//-----------------------------------------------------------------------
+// Spreadsheet Functions
+//-----------------------------------------------------------------------
+
+function processSpreasheet(htmlstr) {
+
+};
 function isLabour(value) {
     if(value.__EMPTY_6 == 'Labour' || value.__EMPTY_6 == 'Contract Labour') {
         return true;
     }
     return false;
-}
+};
 function isBillable(value) {
     if(value.__EMPTY_11 == 'Billable') {
         return true;
     }
     return false;
-}
+};
+

@@ -7,62 +7,64 @@
     </head>
     <body style="margin: 10px">
         <h3 style="text-align: center;">Project Status Report</h3>
-        <b>Project Properties</b>
-        <table border="1" style="width:100%;">
-            <tr>
-                <td>Customer Name</td>
-                <td colspan="3"><output id="Cust_Name"></td>
-            </tr>
-            <tr>
-                <td>Project Sponsor</td>
-                <td colspan="3"><output id="Sponsor"></td>
-            </tr>
-            <tr>
-                <td>Project Manager</td>
-                <td colspan="3"><output id="PM_Name"></td>
-            </tr>
-            <tr>
-                <td>Project Name</td>
-                <td colspan="3"><output id="P_Name"></td>
-            </tr>
-            <tr>
-                <td>Project Code</td>
-                <td><output id="P_Code"></td>
-                <td>Project Contract Basis</td>
-                <td><output id="ContractBasis"></td>
-            </tr>
-            <tr>
-                <td>Project Category</td>
-                <td><output id="Category"></output></td>
-                <td>Project Stage</td>
-                <td><output id="Stage"></td>
-            </tr>
-            <tr>
-                <td>Project Start Date</td>
-                <td><output id="Start_Date"></td>
-                <td>PSR Frequency</td>
-                <td><output id="PSRFrequency"></td>
-            </tr>
-            <tr>
-                <td>Baseline Approved Completion Date</td>
-                <td><output id="BACompDate"></td>
-                <td>Reporting Period From</td>
-                <td><output id="RepPeriodFrom"></td>
-            </tr>
-            <tr>
-                <td>Current Approved Completion Date</td>
-                <td><output id="CACompDate"></output></td>
-                <td>Reporting Period To</td>
-                <td><output id="RepPeriodTo"></output></td>
-            </tr>
-            <tr>
-                <td>Forecast Project Completion Date</td>
-                <td><output id="FCompDate"></td>
-                <td>Overall % complete (schedule)</td>
-                <td><output id="PercComp"></td>
-            </tr>
-        </table>       
-        <br>
+        <div id="ProjectProperties">
+            <b>Project Properties</b>
+            <table border="1" style="width:100%;">
+                <tr>
+                    <td>Customer Name</td>
+                    <td colspan="3"><output id="Cust_Name"></td>
+                </tr>
+                <tr>
+                    <td>Project Sponsor</td>
+                    <td colspan="3"><output id="Sponsor"></td>
+                </tr>
+                <tr>
+                    <td>Project Manager</td>
+                    <td colspan="3"><output id="PM_Name"></td>
+                </tr>
+                <tr>
+                    <td>Project Name</td>
+                    <td colspan="3"><output id="P_Name"></td>
+                </tr>
+                <tr>
+                    <td>Project Code</td>
+                    <td><output id="P_Code"></td>
+                    <td>Project Contract Basis</td>
+                    <td><output id="ContractBasis"></td>
+                </tr>
+                <tr>
+                    <td>Project Category</td>
+                    <td><output id="Category"></output></td>
+                    <td>Project Stage</td>
+                    <td><output id="Stage"></td>
+                </tr>
+                <tr>
+                    <td>Project Start Date</td>
+                    <td><output id="Start_Date"></td>
+                    <td>PSR Frequency</td>
+                    <td><output id="PSRFrequency"></td>
+                </tr>
+                <tr>
+                    <td>Baseline Approved Completion Date</td>
+                    <td><output id="BACompDate"></td>
+                    <td>Reporting Period From</td>
+                    <td><output id="RepPeriodFrom"></td>
+                </tr>
+                <tr>
+                    <td>Current Approved Completion Date</td>
+                    <td><output id="CACompDate"></output></td>
+                    <td>Reporting Period To</td>
+                    <td><output id="RepPeriodTo"></output></td>
+                </tr>
+                <tr>
+                    <td>Forecast Project Completion Date</td>
+                    <td><output id="FCompDate"></td>
+                    <td>Overall % complete (schedule)</td>
+                    <td><output id="PercComp"></td>
+                </tr>
+            </table>       
+            <br>
+        </div>
         <div id="fin_sum" style="display: none;">
             <b>Project Financial Summary</b>
             <table id="table_cost" border="1" style="width:100%;margin-top: 0;">
