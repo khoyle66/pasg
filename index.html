@@ -11,15 +11,15 @@
         <table border="1" style="width:100%;">
             <tr>
                 <td>Customer Name</td>
-                <td colspan="3">Department of Environment, Land, Water and Planning (DELWP)</td>
+                <td colspan="3"><output id="Cust_Name"></td>
             </tr>
             <tr>
                 <td>Project Sponsor</td>
-                <td colspan="3">Matt Allen</td>
+                <td colspan="3"><output id="Sponsor"></td>
             </tr>
             <tr>
                 <td>Project Manager</td>
-                <td colspan="3">Kevin Hoyle</td>
+                <td colspan="3"><output id="PM_Name"></td>
             </tr>
             <tr>
                 <td>Project Name</td>
@@ -29,49 +29,49 @@
                 <td>Project Code</td>
                 <td><output id="P_Code"></td>
                 <td>Project Contract Basis</td>
-                <td>Combined</td>
+                <td><output id="ContractBasis"></td>
             </tr>
             <tr>
                 <td>Project Category</td>
-                <td></td>
+                <td><output id="Category"></output></td>
                 <td>Project Stage</td>
-                <td>Execution</td>
+                <td><output id="Stage"></td>
             </tr>
             <tr>
                 <td>Project Start Date</td>
                 <td><output id="Start_Date"></td>
                 <td>PSR Frequency</td>
-                <td>Fortnightly</td>
+                <td><output id="PSRFrequency"></td>
             </tr>
             <tr>
                 <td>Baseline Approved Completion Date</td>
-                <td>20-Jul-18</td>
+                <td><output id="BACompDate"></td>
                 <td>Reporting Period From</td>
-                <td>16/07/2018</td>
+                <td><output id="RepPeriodFrom"></td>
             </tr>
             <tr>
                 <td>Current Approved Completion Date</td>
-                <td></td>
+                <td><output id="CACompDate"></output></td>
                 <td>Reporting Period To</td>
-                <td><output id="W_End"></output></td>
+                <td><output id="RepPeriodTo"></output></td>
             </tr>
             <tr>
                 <td>Forecast Project Completion Date</td>
-                <td>2-Sep-17</td>
+                <td><output id="FCompDate"></td>
                 <td>Overall % complete (schedule)</td>
-                <td>85%</td>
+                <td><output id="PercComp"></td>
             </tr>
         </table>       
         <br>
-        <p>
+        <div id="fin_sum" style="display: none;">
             <b>Project Financial Summary</b>
             <table id="table_cost" border="1" style="width:100%;margin-top: 0;">
                 <thead>
                     <tr>
                         <th>Cost</th>
-                        <th>Initial budget</th>
+                        <th>Initial Budget</th>
                         <th>Approved PCRs</th>
-                        <th>Current budget</th>
+                        <th>Current Budget</th>
                         <th>Actual</th>
                         <th>ETC</th>
                         <th>EAC</th>
@@ -79,13 +79,40 @@
                         <th>VAC(%)</th>
                     </tr>
                 </thead>
-                <tbody>
-                                                                                             
-                </tbody>       
             </table>
-            Labour Hours: <output id="Labour_Hours"></output><br>
-            Labour Sales: $<output id="Labour_Sales"></output>            
-            </p>
+            <br>
+            <table id="table_revenue" border="1" style="width:100%;margin-top: 0;">
+                <thead>
+                    <tr>
+                        <th>Price/Revenue</th>
+                        <th>Agreed Billing</th>
+                        <th>Approved PCRs</th>
+                        <th>Revised Price</th>
+                        <th>Actual</th>
+                        <th>ETC</th>
+                        <th>EAC</th>
+                        <th>VAC($)</th>
+                        <th>VAC(%)</th>
+                    </tr>
+                </thead>
+            </table>  
+            <br>
+            <table id="table_margin" border="1" style="width:100%;margin-top: 0;">
+                <thead>
+                    <tr>
+                        <th>Margin</th>
+                        <th>Initial Budget</th>
+                        <th>Approved PCRs</th>
+                        <th>Current Budget</th>
+                        <th>Actual</th>
+                        <th>ETC</th>
+                        <th>EAC</th>
+                        <th>VAC($)</th>
+                        <th>VAC(%)</th>
+                    </tr>
+                </thead>
+            </table>             
+        </div>
             <ul></ul>        
         <p>
             <div id="htmlout"></div>

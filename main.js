@@ -106,28 +106,19 @@ const XLSX = require('xlsx');
                             title: 'Select a file',
                             filters: [{
                                 name: "Spreadsheets",
-                                extensions: "xls|xlsx|xlsm|xlsb|xml|xlw|xlc|csv|txt|dif|sylk|slk|prn|ods|fods|uos|dbf|wks|123|wq1|qpw|htm|html".split("|")
+                                extensions: "xls|xlsx".split("|")
                             }],
                             properties: ['openFile']
                         }, 
                         function (fileNames) {
                             if (fileNames === undefined) return;
-                            var fileName = fileNames[0];
+                            var fileName = fileNames[0]; //Only get first sheet
                             var workbook = XLSX.readFile(fileName);
 
-                            var sheet_name_list = workbook.SheetNames;
-                            var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);                                                       
+                            //var sheet_name_list = workbook.SheetNames;
+                            //var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);                                                       
                             //console.log(xlData);
-                            win.webContents.send('doc:add',workbook);
-/*
-                            fs.readFile(fileName, 'utf-8', 
-                                function (err, data) 
-                                {
-                                    //console.log("Doc:"+data);
-                                    //win.getElementById("editor").value = data;                     
-                                    win.webContents.send('doc:add',data);
-                                }
-                            );  */                   
+                            win.webContents.send('doc:add',workbook);              
                         }
                     ); 
                   }
